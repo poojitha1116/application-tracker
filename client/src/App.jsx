@@ -4,9 +4,11 @@ import {
   getSummary,
   createApplication,
   updateApplication,
+  updateStatus,
   deleteApplication,
 } from './api';
 import ApplicationForm from './components/ApplicationForm';
+import ApplicationCard from './components/ApplicationCard';
 import './App.css';
 
 export default function App() {
@@ -61,6 +63,15 @@ export default function App() {
       setError(err.message);
     }
   }
+  
+  async function handleStatusChange(app, status) {
+  try {
+    await updateStatus(app.id, status);
+    await load();
+  } catch (err) {
+    setError(err.message);
+  }
+}
 
   if (loading) return <p>Loading...</p>;
 
@@ -77,15 +88,17 @@ export default function App() {
       {applications.length === 0 ? (
         <p>No applications yet. Add your first one!</p>
       ) : (
-        <ul>
-          {applications.map((a) => (
-            <li key={a.id} style={{ marginBottom: 8 }}>
-              <strong>{a.company}</strong> - {a.role} ({a.status}) - {a.date_applied}{' '}
-              <button onClick={() => openEdit(a)}>Edit</button>{' '}
-              <button onClick={() => handleDelete(a)}>Delete</button>
-            </li>
-          ))}
-        </ul>
+        <ul style={{ padding: 0, marginTop: 16 }}>
+  {applications.map((a) => (
+    <ApplicationCard
+      key={a.id}
+      app={a}
+      onEdit={openEdit}
+      onDelete={handleDelete}
+      onStatusChange={handleStatusChange}
+    />
+  ))}
+</ul>
       )}
 
       {formOpen && (
