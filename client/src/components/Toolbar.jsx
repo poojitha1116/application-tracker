@@ -2,12 +2,11 @@ const STATUSES = ['Applied', 'Interview', 'Offer', 'Rejected'];
 
 export default function Toolbar({ filters, onChange, onAdd }) {
   return (
-    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', margin: '12px 0' }}>
+    <div className="toolbar">
       <input
         placeholder="Search company or role..."
         value={filters.search}
         onChange={(e) => onChange({ ...filters, search: e.target.value })}
-        style={{ flex: 1, minWidth: 180 }}
       />
       <select
         value={filters.status}
@@ -27,7 +26,7 @@ export default function Toolbar({ filters, onChange, onAdd }) {
         <option value="company">Company A-Z</option>
         <option value="updated_desc">Recently updated</option>
       </select>
-      <button onClick={onAdd}>+ Add application</button>
+      <button className="primary" onClick={onAdd}>+ Add application</button>
     </div>
   );
 }

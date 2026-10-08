@@ -9,8 +9,8 @@ import {
 } from './api';
 import ApplicationForm from './components/ApplicationForm';
 import ApplicationCard from './components/ApplicationCard';
-import Toolbar from './components/Toolbar';
 import SummaryBar from './components/SummaryBar';
+import Toolbar from './components/Toolbar';
 import './App.css';
 
 export default function App() {
@@ -19,28 +19,27 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [formOpen, setFormOpen] = useState(false);
-  const [editing, setEditing] = useState(null); // the application being edited, or null for "add"
+  const [editing, setEditing] = useState(null); // application being edited, or null for "add"
   const [filters, setFilters] = useState({ search: '', status: '', sort: 'date_desc' });
 
   async function load() {
-  try {
-    setError('');
-    const [apps, sum] = await Promise.all([getApplications(filters), getSummary()]);
-    setApplications(apps);
-    setSummary(sum);
-  } catch (err) {
-    setError(err.message);
-  } finally {
-    setLoading(false);
+    try {
+      setError('');
+      const [apps, sum] = await Promise.all([getApplications(filters), getSummary()]);
+      setApplications(apps);
+      setSummary(sum);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   }
-}
 
-useEffect(() => {
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  load();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [filters]);
-
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters]);
 
   function openAdd() {
     setEditing(null);
@@ -68,39 +67,40 @@ useEffect(() => {
       setError(err.message);
     }
   }
-  
-  async function handleStatusChange(app, status) {
-  try {
-    await updateStatus(app.id, status);
-    await load();
-  } catch (err) {
-    setError(err.message);
-  }
-}
 
-  if (loading) return <p>Loading...</p>;
+  async function handleStatusChange(app, status) {
+    try {
+      await updateStatus(app.id, status);
+      await load();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  if (loading) return <div className="container"><p>Loading...</p></div>;
 
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto', padding: 20, textAlign: 'left' }}>
+    <div className="container">
       <h1>Application Tracker</h1>
-      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-      <SummaryBar summary={summary} />
+      {error && <p className="error">Error: {error}</p>}
 
+      <SummaryBar summary={summary} />
       <Toolbar filters={filters} onChange={setFilters} onAdd={openAdd} />
+
       {applications.length === 0 ? (
-        <p>No applications yet. Add your first one!</p>
+        <p className="empty">No applications found. Add one, or clear your filters.</p>
       ) : (
-        <ul style={{ padding: 0, marginTop: 16 }}>
-  {applications.map((a) => (
-    <ApplicationCard
-      key={a.id}
-      app={a}
-      onEdit={openEdit}
-      onDelete={handleDelete}
-      onStatusChange={handleStatusChange}
-    />
-  ))}
-</ul>
+        <ul className="app-list">
+          {applications.map((a) => (
+            <ApplicationCard
+              key={a.id}
+              app={a}
+              onEdit={openEdit}
+              onDelete={handleDelete}
+              onStatusChange={handleStatusChange}
+            />
+          ))}
+        </ul>
       )}
 
       {formOpen && (

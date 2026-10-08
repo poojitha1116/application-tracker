@@ -35,22 +35,15 @@ export default function ApplicationForm({ initialData, onSave, onClose }) {
   }
 
   return (
-    <div
-      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-      onClick={onClose}
-    >
-      <form
-        onSubmit={submit}
-        onClick={(e) => e.stopPropagation()}
-        style={{ background: 'white', color: 'black', padding: 20, borderRadius: 8, width: 420, display: 'flex', flexDirection: 'column', gap: 8 }}
-      >
+    <div className="overlay" onClick={onClose}>
+      <form className="modal" onSubmit={submit} onClick={(e) => e.stopPropagation()}>
         <h2>{initialData ? 'Edit application' : 'Add application'}</h2>
 
         <label>Company *
-          <input name="company" value={form.company} onChange={change} style={{ width: '100%' }} />
+          <input name="company" value={form.company} onChange={change} />
         </label>
         <label>Role *
-          <input name="role" value={form.role} onChange={change} style={{ width: '100%' }} />
+          <input name="role" value={form.role} onChange={change} />
         </label>
         <label>Date applied
           <input type="date" name="date_applied" value={form.date_applied} onChange={change} />
@@ -61,20 +54,22 @@ export default function ApplicationForm({ initialData, onSave, onClose }) {
           </select>
         </label>
         <label>Job link
-          <input name="job_link" value={form.job_link} onChange={change} style={{ width: '100%' }} />
+          <input name="job_link" value={form.job_link} onChange={change} placeholder="https://..." />
         </label>
         <label>Follow-up date
           <input type="date" name="follow_up_date" value={form.follow_up_date} onChange={change} />
         </label>
         <label>Notes
-          <textarea name="notes" value={form.notes} onChange={change} rows={3} style={{ width: '100%' }} />
+          <textarea name="notes" value={form.notes} onChange={change} rows={3} />
         </label>
 
-        {error && <p style={{ color: 'red', margin: 0 }}>{error}</p>}
+        {error && <p className="error" style={{ margin: 0 }}>{error}</p>}
 
-        <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+        <div className="buttons">
           <button type="button" onClick={onClose}>Cancel</button>
-          <button type="submit" disabled={saving}>{saving ? 'Saving...' : 'Save'}</button>
+          <button type="submit" className="primary" disabled={saving}>
+            {saving ? 'Saving...' : 'Save'}
+          </button>
         </div>
       </form>
     </div>
