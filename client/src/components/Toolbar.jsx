@@ -1,6 +1,6 @@
 const STATUSES = ['Applied', 'Interview', 'Offer', 'Rejected'];
 
-export default function Toolbar({ filters, onChange, onAdd }) {
+export default function Toolbar({ filters, onChange, onAdd, onExport }) {
   return (
     <div className="toolbar">
       <input
@@ -26,6 +26,7 @@ export default function Toolbar({ filters, onChange, onAdd }) {
         <option value="company">Company A-Z</option>
         <option value="updated_desc">Recently updated</option>
       </select>
+      <button onClick={onExport}>Export CSV</button>
       <button className="primary" onClick={onAdd}>+ Add application</button>
     </div>
   );
