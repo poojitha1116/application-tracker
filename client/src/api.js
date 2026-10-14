@@ -34,3 +34,15 @@ export const updateStatus = (id, status) =>
 
 export const deleteApplication = (id) =>
   request(`/applications/${id}`, { method: 'DELETE' });
+export const exportCsv = (applications) => {
+  const cols = ['company', 'role', 'date_applied', 'status', 'job_link', 'follow_up_date', 'notes'];
+  const esc = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const rows = [cols.join(','), ...applications.map((a) => cols.map((c) => esc(a[c])).join(','))];
+  const blob = new Blob([rows.join('\n')], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'applications.csv';
+  link.click();
+  URL.revokeObjectURL(url);
+};

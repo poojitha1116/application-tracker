@@ -6,6 +6,7 @@ import {
   updateApplication,
   updateStatus,
   deleteApplication,
+  exportCsv 
 } from './api';
 import ApplicationForm from './components/ApplicationForm';
 import ApplicationCard from './components/ApplicationCard';
@@ -85,8 +86,12 @@ export default function App() {
       {error && <p className="error">Error: {error}</p>}
 
       <SummaryBar summary={summary} />
-      <Toolbar filters={filters} onChange={setFilters} onAdd={openAdd} />
-
+      <Toolbar
+        filters={filters}
+        onChange={setFilters}
+        onAdd={openAdd}
+        onExport={() => exportCsv(applications)}
+      />
       {applications.length === 0 ? (
         <p className="empty">No applications found. Add one, or clear your filters.</p>
       ) : (

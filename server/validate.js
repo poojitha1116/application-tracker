@@ -9,7 +9,8 @@ export function validateApplication(body = {}) {
   const role = String(body.role ?? '').trim();
   const date_applied = String(body.date_applied ?? '').trim();
   const status = body.status ?? 'Applied';
-  const job_link = String(body.job_link ?? '').trim() || null;
+  let job_link = String(body.job_link ?? '').trim() || null;
+  if (job_link && !/^https?:\/\//i.test(job_link)) job_link = 'https://' + job_link;
   const notes = String(body.notes ?? '').trim() || null;
   const follow_up_date = String(body.follow_up_date ?? '').trim() || null;
 
