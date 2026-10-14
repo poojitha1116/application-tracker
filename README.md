@@ -13,7 +13,8 @@ A small web app for students to track job and internship applications.
 
 ## Run it
 
-Requires Node.js 18+.
+Requires Node.js 20 or 22 (LTS). `better-sqlite3` is pinned to v12, which ships prebuilt
+binaries. Newer versions (13+) have no prebuilt Windows binary and need Visual Studio Build Tools.
 
 Terminal 1 (API, port 3001):
 
